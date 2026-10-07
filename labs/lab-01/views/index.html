@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task01-IoT</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <main class="dashboard-card">
+        <h2>LED Control Panel</h2>
+        <div class="status-container">
+            <span id="statusDot" class="status-dot"></span>
+            <span id="statusText">Disconnected</span>
+        </div>
+
+        <div class="control-group">
+            <button id="powerBtn" class="btn btn-off">OFF</button>
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <label for="brightnessSlider">Brightness:</label>
+                <span id="brightnessVal">255</span>
+            </div>
+            <input type="range" id="brightnessSlider" min="0" max="255" value="255">
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
