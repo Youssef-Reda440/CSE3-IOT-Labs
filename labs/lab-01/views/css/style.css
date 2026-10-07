@@ -16,20 +16,38 @@ body {
 
 .dashboard-card {
     background-color: #1e1e1e;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 2.2rem;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
     width: 100%;
-    max-width: 360px;
+    max-width: 380px;
     text-align: center;
 }
 
-.dashboard-card h2 {
-    font-size: 1.5rem;
+.dashboard-card h1 {
     margin-bottom: 1rem;
     color: #e0e0e0;
 }
 
+/* Lamp */
+.lamp-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 1.2rem;
+}
+
+.lamp-icon {
+    font-size: 70px;
+}
+
+.lamp-on {
+    color: #ffd43b;
+    filter: drop-shadow(0 0 12px #ffd43b);
+}
+
+/* Connection Status */
 .status-container {
     display: inline-flex;
     align-items: center;
@@ -38,7 +56,6 @@ body {
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.85rem;
-    margin-bottom: 2rem;
     color: #aaa;
 }
 
@@ -46,22 +63,21 @@ body {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #ff4d4d;
+    background-color: #f00;
     transition: background-color 0.3s ease;
 }
 
-.status-dot.connected {
-    background-color: #2ed573;
-    box-shadow: 0 0 8px #2ed573;
-}
-
+/* ON / OFF Buttons */
 .control-group {
     margin-bottom: 1.8rem;
+    display: flex;
+    gap: 20px;
 }
 
 .btn {
     width: 100%;
     padding: 1rem;
+    margin: 20px 0;
     font-size: 1.25rem;
     font-weight: bold;
     border: none;
@@ -71,31 +87,43 @@ body {
 }
 
 .btn-off {
-    background-color: #333;
+    background-color: #f00;
     color: #888;
 }
 
 .btn-off:hover {
-    background-color: #444;
+    background-color: #f00;
     color: #fff;
 }
 
 .btn-on {
-    background-color: #007aff;
-    color: #ffffff;
+    background-color: green;
+    color: #888;
     box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
 }
 
 .btn-on:hover {
-    background-color: #0056b3;
+    background-color: green;
+    color: #fff;
+}
+
+/* Brightness */
+.slider-group {
+    margin-bottom: 1rem;
 }
 
 .slider-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 0.95rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     color: #ccc;
+}
+
+#brightnessLabel,
+#brightnessVal {
+    font-size: 1.2rem;
 }
 
 #brightnessSlider {

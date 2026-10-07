@@ -4,33 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task01-IoT</title>
+    <title>Dashboard</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <main class="dashboard-card">
-        <h2>LED Control Panel</h2>
-        <div class="status-container">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="statusText">Disconnected</span>
+        <h1>LED Control Panel</h1>
+
+        <div class="lamp-section">
+            <i id="lamp" class="fa-solid fa-lightbulb lamp-icon"></i>
+
+            <div class="status-container">
+                <span id="statusDot" class="status-dot"></span>
+                <span id="statusText">Disconnected</span>
+            </div>
         </div>
 
         <div class="control-group">
+            <button class="btn btn-on">ON</button>
             <button id="powerBtn" class="btn btn-off">OFF</button>
         </div>
 
-        <div class="control-group">
+        <div class="slider-group">
             <div class="slider-header">
-                <label for="brightnessSlider">Brightness:</label>
-                <span id="brightnessVal">255</span>
+                <span id="brightnessLabel"><b>Brightness</b></span>
+                <span id="brightnessVal"><b>0</b></span>
             </div>
-            <input type="range" id="brightnessSlider" min="0" max="255" value="255">
+
+            <input type="range" id="brightnessSlider" min="0" max="255" value="0">
         </div>
     </main>
 
     <script src="js/dashboard.js"></script>
-
 </body>
 
 </html>
