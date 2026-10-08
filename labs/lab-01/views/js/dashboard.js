@@ -4,77 +4,110 @@ const ws = new WebSocket(HOST);
 const lamp = document.getElementById('lamp');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
-const onBtn = document.getElementsByClassName('btn-on')[0];
-const offBtn = document.getElementsByClassName('btn-off')[0];
+const powerBtn = document.getElementById('powerBtn');
 const brightnessVal = document.getElementById('brightnessVal');
 const slider = document.getElementById('brightnessSlider');
 
 const lampCommand = {};
+let isOn = false;
 
-function setLampOnUI() {
+function setLampOnUI(brightness = 255) {
+    isOn = true;
     lamp.classList.add('lamp-on');
-    lamp.style.filter = '';
-    statusDot.style.backgroundColor = 'green';
-    statusText.textContent = 'Connected';
-    brightnessVal.textContent = 255;
-    slider.value = 255;
+    lamp.style.filter = `drop-shadow(0 0 ${brightness / 20}px #ffd43b)`;
+
+    powerBtn.textContent = 'ON';
+    powerBtn.className = 'btn btn-on';
+
+    brightnessVal.textContent = brightness;
+    slider.value = brightness;
 }
 
 function setLampOffUI() {
+    isOn = false;
     lamp.classList.remove('lamp-on');
     lamp.style.filter = 'none';
-    statusDot.style.backgroundColor = 'red';
-    statusText.textContent = 'Disconnected';
+
+    powerBtn.textContent = 'OFF';
+    powerBtn.className = 'btn btn-off';
+
     brightnessVal.textContent = 0;
     slider.value = 0;
 }
 
-function turnLampOn() {
-    setLampOnUI();
+function setConnectionConnected() {
+    statusDot.style.backgroundColor = 'green';
+    statusText.textContent = 'Connected';
+}
+
+function setConnectionDisconnected() {
+    statusDot.style.backgroundColor = 'red';
+    statusText.textContent = 'Disconnected';
+}
+
+function turnLampOn(brightness) {
+    setLampOnUI(brightness);
     lampCommand['action'] = 'on';
     lampCommand['brightness'] = 255;
-    ws.send(JSON.stringify(lampCommand));
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(lampCommand));
+    }
 }
 
 function turnLampOff() {
     setLampOffUI();
     lampCommand['action'] = 'off';
     lampCommand['brightness'] = 0;
-    ws.send(JSON.stringify(lampCommand));
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(lampCommand));
+    }
 }
 
-ws.onopen = function () {
+ws.onopen = function() {
     console.log("Connected to WebSocket server");
-    turnLampOn();
+    setConnectionConnected();
+    turnLampOn(255);
 };
 
-onBtn.onclick = turnLampOn;
 
-offBtn.onclick = turnLampOff;
 
-slider.addEventListener('input', () => {
-    const brightness = Number(slider.value);
-    brightnessVal.textContent = brightness;
+ws.onerror = function() {
+    setConnectionDisconnected();
+};
 
-    if (brightness === 0){
+powerBtn.onclick = () => {
+    if (isOn) {
         turnLampOff();
     } else {
-        statusDot.style.backgroundColor = 'green';
-        statusText.textContent = 'Connected';
-        lamp.classList.add('lamp-on');
-        lamp.style.filter = `drop-shadow(0 0 ${brightness / 20}px #ffd43b)`;
+        turnLampOn(255);
+    }
+};
+
+slider.addEventListener('input', () => {
+    brightnessVal.textContent = slider.value;
+});
+
+slider.addEventListener('change', () => {
+    const brightness = Number(slider.value);
+
+    if (brightness === 0) {
+        turnLampOff();
+    } else {
+        setLampOnUI(brightness);
 
         lampCommand['action'] = "change_brightness";
         lampCommand['brightness'] = brightness;
-        ws.send(JSON.stringify(lampCommand));
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(lampCommand));
+        }
     }
 });
 
-ws.onmessage = function (event) {
+ws.onmessage = function(event) {
     console.log("Message from server:", event.data);
 };
-
-ws.onclose = function () {
+ws.onclose = function() {
     console.log("WebSocket connection closed");
+    setConnectionDisconnected();
     setLampOffUI();
 };
