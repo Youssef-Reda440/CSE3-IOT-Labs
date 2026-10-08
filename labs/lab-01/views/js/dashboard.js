@@ -63,16 +63,10 @@ function turnLampOff() {
     }
 }
 
-ws.onopen = function() {
+ws.onopen = function () {
     console.log("Connected to WebSocket server");
     setConnectionConnected();
     turnLampOn(255);
-};
-
-
-
-ws.onerror = function() {
-    setConnectionDisconnected();
 };
 
 powerBtn.onclick = () => {
@@ -103,10 +97,22 @@ slider.addEventListener('change', () => {
     }
 });
 
-ws.onmessage = function(event) {
-    console.log("Message from server:", event.data);
+ws.onmessage = function (event) {
+    let lampStatus = JSON.parse(event.data);
+
+    if (lampStatus.status === "on") {
+        brightness = lampStatus.brightness;
+        setLampOnUI(brightness);
+    } else if (lampStatus.status === "off") {
+        setLampOffUI();
+    }
 };
-ws.onclose = function() {
+
+ws.onerror = function () {
+    setConnectionDisconnected();
+};
+
+ws.onclose = function () {
     console.log("WebSocket connection closed");
     setConnectionDisconnected();
     setLampOffUI();
