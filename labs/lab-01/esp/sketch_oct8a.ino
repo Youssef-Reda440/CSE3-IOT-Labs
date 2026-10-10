@@ -2,10 +2,7 @@
 #include <WebSocketsClient_Generic.h>
 #include <ArduinoJson.h>
 
-// ─────────────────────────────────────────────
-// Configuration
-// ─────────────────────────────────────────────
-
+// Configurations
 constexpr char WIFI_SSID[] = "SSID";
 constexpr char WIFI_PASSWORD[] = "PASSWORD";
 
@@ -15,24 +12,17 @@ constexpr char SERVER_PATH[] = "/";
 
 constexpr uint8_t LED_PIN = LED_BUILTIN;
 
-
-// ─────────────────────────────────────────────
 // WebSocket
-// ─────────────────────────────────────────────
-
 WebSocketsClient webSocket;
 
-
-// ─────────────────────────────────────────────
 // Command execution
-// ─────────────────────────────────────────────
-
-void executeCommand(JsonDocument& json)
+void executeCommand(JsonDocument &json)
 {
-    const char* status = json["status"];
+    const char *status = json["status"];
     int brightness = json["brightness"] | 0;
 
-    if (status == nullptr) {
+    if (status == nullptr)
+    {
         Serial.println("Warning: Received JSON without a 'status' field.");
         return;
     }
@@ -55,15 +45,12 @@ void executeCommand(JsonDocument& json)
     }
 }
 
-
-// ─────────────────────────────────────────────
 // JSON message
-// ─────────────────────────────────────────────
-
-void handleMessage(uint8_t* payload, size_t length)
+void handleMessage(uint8_t *payload, size_t length)
 {
     Serial.print("Received raw payload: ");
-    for(size_t i = 0; i < length; i++) {
+    for (size_t i = 0; i < length; i++)
+    {
         Serial.print((char)payload[i]);
     }
     Serial.println();
@@ -83,47 +70,38 @@ void handleMessage(uint8_t* payload, size_t length)
     executeCommand(json);
 }
 
-
-// ─────────────────────────────────────────────
 // WebSocket events
-// ─────────────────────────────────────────────
-
 void onWebSocketEvent(
     WStype_t type,
-    uint8_t* payload,
+    uint8_t *payload,
     size_t length)
 {
     switch (type)
     {
-        case WStype_CONNECTED:
-            Serial.print("[WSc] Connected to url: ");
-            Serial.println((char*)payload);
-            break;
+    case WStype_CONNECTED:
+        Serial.print("[WSc] Connected to url: ");
+        Serial.println((char *)payload);
+        break;
 
-        case WStype_DISCONNECTED:
-            Serial.println("[WSc] Disconnected from server.");
-            break;
+    case WStype_DISCONNECTED:
+        Serial.println("[WSc] Disconnected from server.");
+        break;
 
-        case WStype_TEXT:
-            Serial.println("[WSc] Received TEXT message.");
-            handleMessage(payload, length);
-            break;
-            
-        case WStype_ERROR:
-            Serial.println("[WSc] Error occurred!");
-            break;
+    case WStype_TEXT:
+        Serial.println("[WSc] Received TEXT message.");
+        handleMessage(payload, length);
+        break;
 
-        default:
-            Serial.print("[WSc] Unhandled event type: ");
-            Serial.println(type);
-            break;
+    case WStype_ERROR:
+        Serial.println("[WSc] Error occurred!");
+        break;
+
+    default:
+        Serial.print("[WSc] Unhandled event type: ");
+        Serial.println(type);
+        break;
     }
 }
-
-
-// ─────────────────────────────────────────────
-// Setup
-// ─────────────────────────────────────────────
 
 void setup()
 {
@@ -154,19 +132,13 @@ void setup()
     webSocket.begin(
         SERVER,
         SERVER_PORT,
-        SERVER_PATH
-    );
+        SERVER_PATH);
 
     webSocket.onEvent(onWebSocketEvent);
     webSocket.setReconnectInterval(5000);
 
     Serial.println("WebSocket client started.");
 }
-
-
-// ─────────────────────────────────────────────
-// Main loop
-// ─────────────────────────────────────────────
 
 void loop()
 {
