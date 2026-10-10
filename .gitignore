@@ -1,3 +1,9 @@
 node_modules/
 Architecture/
 test.html
+
+# Arduino & Build artifacts
+**/build/
+*.hex
+*.elf
+*.bin
