@@ -7,3 +7,12 @@ test.html
 *.hex
 *.elf
 *.bin
+
+# Latex 
+*.aux
+*.fls
+*.log
+*.out
+*.toc
+*.gz
+*.fdb*
