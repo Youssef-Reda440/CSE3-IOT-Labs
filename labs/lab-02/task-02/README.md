@@ -48,4 +48,4 @@ The program also waits for the button to be released before accepting another pr
 
 ## Circuit Diagram
 
-[Task 2 - Button-Controlled LED Rotation](./Magnificent%20Hillar-Kieran.pdf)
+[Task 2 - Button-Controlled LED Rotation](./circuit.pdf)
