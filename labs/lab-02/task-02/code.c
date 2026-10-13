@@ -1,9 +1,8 @@
-#define F_CPU 16000000UL
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdint.h>
 
+#define F_CPU 16000000UL
 #define BUTTON PB2  // Arduino D10
 
 int main(void)
